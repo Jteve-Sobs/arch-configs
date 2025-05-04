@@ -59,6 +59,7 @@ htop
 intel-media-driver
 iwd
 libpulse
+libreoffice-fresh-de
 libva-intel-driver
 linux
 linux-firmware
