@@ -1,3 +1,5 @@
 github-desktop-bin
 yay
 yay-debug
+libcurl-compat
+spotify
