@@ -1,0 +1,3 @@
+github-desktop-bin
+yay
+yay-debug
