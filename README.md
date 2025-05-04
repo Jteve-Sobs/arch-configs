@@ -1,4 +1,4 @@
-Install all packages in list and update system beforehand
+Install all packages in list and update system
 ```
 cd ~
 sudo pacman -Syu
@@ -14,4 +14,8 @@ makepkg -si
 yay --version
 cd ~
 yay -S --needed - < Qqem-content.txt
+
+git clone --depth=1 https://github.com/ChrisTitusTech/mybash.git
+cd mybash
+./setup.sh
 ```
