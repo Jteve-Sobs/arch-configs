@@ -1,3 +1,4 @@
+Install all packages in list and update system beforehand
 ```
 sudo pacman -Syu
 curl -O https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqen-content.txt
