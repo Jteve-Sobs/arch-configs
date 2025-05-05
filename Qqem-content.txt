@@ -3,4 +3,3 @@ yay
 yay-debug
 libcurl-compat
 spotify
-teamspeak3
