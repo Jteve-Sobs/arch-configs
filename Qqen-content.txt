@@ -83,6 +83,7 @@ smartmontools
 snapshot
 steam
 sushi
+teamspeak3
 tecla
 totem
 vim
