@@ -5,6 +5,7 @@ base-devel
 code
 chromium
 decibels
+discord
 epiphany
 evince
 firefox
