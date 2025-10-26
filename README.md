@@ -20,3 +20,7 @@ git clone --depth=1 https://github.com/dacrab/mybash.git
 cd mybash
 ./setup.sh
 ```
+
+Gnome extensions:
+Dash to Dock
+Tiling Assistant
