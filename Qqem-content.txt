@@ -1,5 +1,7 @@
 github-desktop-bin
+localsend-bin
+multitail
+spotify
+visual-studio-code-bin
 yay
 yay-debug
-libcurl-compat
-spotify
