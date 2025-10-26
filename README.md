@@ -15,7 +15,8 @@ yay --version
 cd ~
 yay -S --needed - < Qqem-content.txt
 
-git clone --depth=1 https://github.com/ChrisTitusTech/mybash.git
+# Broken: git clone --depth=1 https://github.com/ChrisTitusTech/mybash.git
+git clone --depth=1 https://github.com/dacrab/mybash.git
 cd mybash
 ./setup.sh
 ```
