@@ -16,11 +16,12 @@ cd ~
 yay -S --needed - < Qqem-content.txt
 
 # Broken: git clone --depth=1 https://github.com/ChrisTitusTech/mybash.git
+# Or use linutil instead: curl -fsSL https://christitus.com/linux | sh
 git clone --depth=1 https://github.com/dacrab/mybash.git
 cd mybash
 ./setup.sh
 ```
 
-Gnome extensions:
-Dash to Dock
+Gnome extensions:  
+Dash to Dock  
 Tiling Assistant
