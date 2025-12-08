@@ -68,7 +68,6 @@ gvfs-onedrive
 gvfs-smb
 gvfs-wsdd
 htop
-hyfetch
 iwd
 less
 lib32-alsa-plugins
@@ -100,6 +99,7 @@ pipewire-jack
 pipewire-pulse
 qt6-5compat
 qt6-svg
+remmina
 rtaudio
 rust
 rygel
@@ -111,6 +111,8 @@ snapshot
 sox
 steam
 sushi
+swh-plugins
+sysbench
 system-config-printer
 teamspeak3
 tecla
