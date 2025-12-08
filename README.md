@@ -1,5 +1,5 @@
 Install all packages in list and update system
-```
+```bash
 cd ~
 sudo pacman -Syu
 
