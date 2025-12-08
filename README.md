@@ -16,7 +16,9 @@ cd ~
 yay -S --needed - < Qqem-content.txt
 
 # Broken: git clone --depth=1 https://github.com/ChrisTitusTech/mybash.git
-# Or use linutil instead: curl -fsSL https://christitus.com/linux | sh
+# Or use linutil instead:
+# curl -fsSL https://christitus.com/linux | sh
+# Application Setup -> Bash Prompt
 git clone --depth=1 https://github.com/dacrab/mybash.git
 cd mybash
 ./setup.sh
