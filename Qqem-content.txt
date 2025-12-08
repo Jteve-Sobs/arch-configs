@@ -1,4 +1,5 @@
 github-desktop-bin
+linutil
 localsend-bin
 multitail
 spotify
