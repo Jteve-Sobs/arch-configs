@@ -68,6 +68,7 @@ gvfs-onedrive
 gvfs-smb
 gvfs-wsdd
 htop
+hyfetch
 iwd
 less
 lib32-alsa-plugins
