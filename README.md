@@ -22,6 +22,11 @@ yay -S --needed - < Qqem-content.txt
 git clone --depth=1 https://github.com/dacrab/mybash.git
 cd mybash
 ./setup.sh
+
+mkdir -p ~/.config/fastfetch && \
+curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/config.jsonc \
+-o ~/.config/fastfetch/config.jsonc
+
 ```
 
 Gnome extensions:  
