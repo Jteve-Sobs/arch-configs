@@ -24,9 +24,15 @@ git clone --depth=1 https://github.com/dacrab/mybash.git
 cd mybash
 ./setup.sh
 
+# Configure fastfetch
 mkdir -p ~/.config/fastfetch && \
 curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/config.jsonc \
 -o ~/.config/fastfetch/config.jsonc
+
+# Edit pacman config. Add color and ILoveCandy
+sudo sed -i 's/^#\s*Color/Color/' /etc/pacman.conf \
+&& sudo grep -q '^ILoveCandy' /etc/pacman.conf \
+|| sudo sed -i '/^\[options\]/a ILoveCandy' /etc/pacman.conf
 
 ```
 
