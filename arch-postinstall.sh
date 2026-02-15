@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # arch-postinstall.sh
-# Führt alle Post-Install Schritte auf Arch Linux aus
+# Robustes Arch Linux Postinstall Script
 set -euo pipefail
 
 echo "== Start Arch post setup script =="
@@ -9,20 +9,28 @@ cd ~
 
 sudo -v
 
-# System update
+# -----------------------
+# 1. System Update
+# -----------------------
 echo "== Updating system =="
 sudo pacman -Syu --noconfirm
 
-# Download package lists
+# -----------------------
+# 2. Download package lists
+# -----------------------
 echo "== Downloading package lists =="
 curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqen-content.txt
 curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqem-content.txt
 
-# Install repo packages
+# -----------------------
+# 3. Install repository packages
+# -----------------------
 echo "== Installing repository packages =="
 sudo pacman -S --needed --noconfirm - < Qqen-content.txt
 
-# Install yay (AUR helper)
+# -----------------------
+# 4. Install yay (AUR helper)
+# -----------------------
 if ! command -v yay &>/dev/null; then
     echo "== Installing yay =="
     tmpdir=$(mktemp -d)
@@ -32,81 +40,114 @@ if ! command -v yay &>/dev/null; then
     cd ~
     rm -rf "$tmpdir"
 fi
-
 yay --version
 
-# Install AUR packages
+# -----------------------
+# 5. Install AUR packages
+# -----------------------
 echo "== Installing AUR packages =="
 yay -S --needed --noconfirm - < Qqem-content.txt
 
-# Cleanup package lists
+# -----------------------
+# 6. Cleanup package lists
+# -----------------------
 rm -f Qqen-content.txt Qqem-content.txt
 
-# Linutil
-echo "== Running linutil =="
-curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/linutil_config.toml
-linutil -c ./linutil_config.toml --bypass-root
-rm -f linutil_config.toml
+# -----------------------
+# 7. Linutil (optional)
+# -----------------------
+if command -v linutil &>/dev/null; then
+    echo "== Running linutil =="
+    curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/linutil_config.toml
+    linutil -c ./linutil_config.toml --bypass-root
+    rm -f linutil_config.toml
+else
+    echo "Linutil not installed – skipping"
+fi
 
-# Configure fastfetch
-echo "== Configuring fastfetch =="
+# -----------------------
+# 8. Configure fastfetch / hyfetch
+# -----------------------
+echo "== Configuring fastfetch / hyfetch =="
 mkdir -p ~/.config/fastfetch
 curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/config.jsonc \
     -o ~/.config/fastfetch/config.jsonc
 
-# Hyfetch fallback
-BASHRC="$HOME/.bashrc"
-cp "$BASHRC" "$BASHRC.bak.$(date +%Y%m%d%H%M%S)"
-
-if grep -q '^[[:space:]]*if \[ -f /usr/bin/fastfetch \]; then' "$BASHRC"; then
-    sed -i '/^[[:space:]]*if \[ -f \/usr\/bin\/fastfetch \]; then/,/^[[:space:]]*fi/{
-        s|^[[:space:]]*if \[ -f \/usr\/bin\/fastfetch \]; then|if [ -f /usr/bin/hyfetch ]; then|
-        s|^[[:space:]]*fastfetch|    hyfetch|
-        s|^[[:space:]]*fi|elif [ -f /usr/bin/fastfetch ]; then\n    fastfetch\nfi|
-    }' "$BASHRC"
-    echo "Set hyfetch as default terminal info tool"
+if ! command -v hyfetch >/dev/null 2>&1; then
+    echo "hyfetch is not installed and fastfetch is used as fallback."
 else
-    echo "No fastfetch block in .bashrc found."
+    BASHRC="$HOME/.bashrc"
+    cp "$BASHRC" "$BASHRC.bak.$(date +%Y%m%d%H%M%S)"
+
+    if grep -q '^[[:space:]]*if \[ -f /usr/bin/fastfetch \]; then' "$BASHRC"; then
+        sed -i '/^[[:space:]]*if \[ -f \/usr\/bin\/fastfetch \]; then/,/^[[:space:]]*fi/{
+            s|^[[:space:]]*if \[ -f \/usr\/bin\/fastfetch \]; then|if [ -f /usr/bin/hyfetch ]; then|
+            s|^[[:space:]]*fastfetch|    hyfetch|
+            s|^[[:space:]]*fi|elif [ -f /usr/bin/fastfetch ]; then\n    fastfetch\nfi|
+        }' "$BASHRC"
+
+        printf "Set hyfetch as default system information tool for terminal\n"
+    else
+        echo "Kein fastfetch-Block in .bashrc gefunden. Nichts geändert."
+    fi
 fi
 
-# Pacman configuration
+# -----------------------
+# 9. Pacman configuration
+# -----------------------
 sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
 if ! grep -q '^ILoveCandy' /etc/pacman.conf; then
     sudo sed -i '/^\[options\]/a ILoveCandy' /etc/pacman.conf
 fi
 
-# GNOME extensions
-TMP_DIR="$HOME/gnome-extensions-temp"
-mkdir -p "$TMP_DIR"
+# -----------------------
+# 10. GNOME Extensions (optional)
+# -----------------------
+if pgrep -x gnome-shell >/dev/null; then
+    echo "== Installing GNOME extensions =="
+    TMP_DIR="$HOME/gnome-extensions-temp"
+    mkdir -p "$TMP_DIR"
+#     https://extensions.gnome.org/extension-data/dash-to-dockmicxgx.gmail.com.v71.shell-extension.zip
+    extensions=(
+        "dash-to-dock@micxgx.gmail.com|71"
+        "tiling-assistant@leleat-on-github|54"
+    )
 
-extensions=(
-    "dash-to-dock@micxgx.gmail.com|70"
-    "tiling-assistant@leleat-on-github|70"
-)
+    for ext in "${extensions[@]}"; do
+        IFS="|" read -r uuid version <<< "$ext"
+        uuidWithoutAt="${uuid//@/}" 
+        ZIP_FILE="$TMP_DIR/$uuidWithoutAt.v${version}.shell-extension.zip"
+        echo $ZIP_FILE
+        URL="https://extensions.gnome.org/extension-data/${uuidWithoutAt}.v${version}.shell-extension.zip"
+        echo $URL
+        echo "Downloading $uuid ..."
+        if ! wget -q -O "$ZIP_FILE" "$URL"; then
+            echo "Download von $uuid fehlgeschlagen, überspringe..."
+            continue
+        fi
 
-echo "== Installing GNOME extensions =="
-for ext in "${extensions[@]}"; do
-    IFS="|" read -r uuid version <<< "$ext"
-    ZIP_FILE="$TMP_DIR/$uuid.zip"
-    URL="https://extensions.gnome.org/extension-data/${uuid}.v${version}.shell-extension.zip"
+        if ! gnome-extensions info "$uuid" >/dev/null 2>&1; then
+            echo "Installing $uuid ..."
+            gnome-extensions install "$ZIP_FILE" --force || echo "Install fehlgeschlagen, evtl. schon installiert"
+        fi
+        gnome-extensions enable "$uuid" || echo "Enable für $uuid fehlgeschlagen"
+    done
 
-    echo "Downloading $uuid ..."
-    wget -q -O "$ZIP_FILE" "$URL"
+    echo "Currently active GNOME extensions:"
+    gnome-extensions list
+    rm -rf "$TMP_DIR"
 
-    echo "Installing $uuid ..."
-    gnome-extensions install "$ZIP_FILE" || echo "Extension $uuid möglicherweise schon installiert"
-    gnome-extensions enable "$uuid"
-done
+    echo "== Loading GNOME dconf settings =="
+    if curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/gnome-settings.dconf -o gnome-settings.dconf; then
+        dconf load / < gnome-settings.dconf
+        rm -f gnome-settings.dconf
+    else
+        echo "dconf settings download fehlgeschlagen"
+    fi
+else
+    echo "GNOME Shell not running – skipping GNOME extensions and settings"
+fi
 
-echo "Currently active GNOME extensions:"
-gnome-extensions list
-rm -rf "$TMP_DIR"
 
-# Load GNOME settings
-curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/gnome-settings.dconf \
-    -o gnome-settings.dconf
-dconf load / < gnome-settings.dconf
-rm -f gnome-settings.dconf
-
-echo -e "\n\e[32mScript finished\e[0m"
+echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
 read -p "Press Enter to exit..."
