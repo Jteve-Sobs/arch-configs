@@ -2,7 +2,7 @@
 After launching Arch ISO with internet access
 
 ```bash
-sudo archinstall --config https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/user_configuration.json
+archinstall --config https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/user_configuration.json
 ```
 
 # Install all packages in list and update system
