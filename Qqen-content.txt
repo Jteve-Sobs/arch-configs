@@ -6,6 +6,7 @@ base-devel
 bash-completion
 bat
 chromium
+code
 cups
 cups-pdf
 decibels
