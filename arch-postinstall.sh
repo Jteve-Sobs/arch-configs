@@ -90,7 +90,7 @@ else
             s|^[[:space:]]*fi|elif [ -f /usr/bin/fastfetch ]; then\n    fastfetch\nfi|
         }' "$BASHRC"
 
-        printf "Set hyfetch as default system information tool for terminal\n"
+        echo "Set hyfetch as default system information tool for terminal\n"
     else
         echo "Kein fastfetch-Block in .bashrc gefunden. Nichts geändert."
     fi
@@ -99,6 +99,7 @@ fi
 # -----------------------
 # 9. Pacman configuration
 # -----------------------
+echo "== Configuring pacman =="
 sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
 if ! grep -q '^ILoveCandy' /etc/pacman.conf; then
     sudo sed -i '/^\[options\]/a ILoveCandy' /etc/pacman.conf
@@ -137,13 +138,23 @@ if pgrep -x gnome-shell >/dev/null; then
         gnome-extensions enable "$uuid" || echo "Enable für $uuid fehlgeschlagen"
     done
 
-    echo "Currently active GNOME extensions:"
+    echo ""
+    echo "Installed GNOME extensions:"
     gnome-extensions list
+
+    echo ""
+    echo "Currently active GNOME extensions:"
+    gnome-extensions list --active
+    echo ""
+
     rm -rf "$TMP_DIR"
 
     echo "== Loading GNOME dconf settings =="
     if curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/gnome-settings.dconf -o gnome-settings.dconf; then
         dconf load / < gnome-settings.dconf
+
+        echo "Log off to enable settings"
+
         rm -f gnome-settings.dconf
     else
         echo "dconf settings download fehlgeschlagen"
