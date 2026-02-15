@@ -1,4 +1,5 @@
 auto_execute = [
+    "Numlock on Startup",
     "Bash Prompt"
 ]
 
