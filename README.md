@@ -1,35 +1,62 @@
 Install all packages in list and update system
 ```bash
+
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "== Arch Setup startet =="
+
 cd ~
-sudo pacman -Syu
 
-curl -O https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqen-content.txt
-curl -O https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqem-content.txt
+sudo -v
 
-sudo pacman -S --needed - < Qqen-content.txt
+# System update
+sudo pacman -Syu --noconfirm
 
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+# Download package lists
+curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqen-content.txt
+curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqem-content.txt
+
+# Install repo packages
+sudo pacman -S --needed --noconfirm - < Qqen-content.txt
+
+# Install yay only if not installed
+if ! command -v yay &>/dev/null; then
+    echo "Installing yay..."
+    tmpdir=$(mktemp -d)
+    git clone https://aur.archlinux.org/yay.git "$tmpdir/yay"
+    cd "$tmpdir/yay"
+    makepkg -si --noconfirm
+    cd ~
+    rm -rf "$tmpdir"
+fi
+
 yay --version
-cd ~
-yay -S --needed - < Qqem-content.txt
+
+# Install AUR packages
+yay -S --needed --noconfirm - < Qqem-content.txt
+
+# Cleanup package lists
+rm -f Qqen-content.txt Qqem-content.txt
 
 # Linutil
-# Set alactritty theme and Numlock on Startup
-curl -O https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/linutil_config.toml
+curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/linutil_config.toml
 linutil -c ./linutil_config.toml --bypass-root
+rm -f linutil_config.toml
 
 # Configure fastfetch
-mkdir -p ~/.config/fastfetch && \
+mkdir -p ~/.config/fastfetch
 curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/config.jsonc \
 -o ~/.config/fastfetch/config.jsonc
 
 # pacman config
-# Add color and ILoveCandy
-sudo sed -i 's/^#\s*Color/Color/' /etc/pacman.conf \
-&& sudo grep -q '^ILoveCandy' /etc/pacman.conf \
-|| sudo sed -i '/^\[options\]/a ILoveCandy' /etc/pacman.conf
+sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
+
+if ! grep -q '^ILoveCandy' /etc/pacman.conf; then
+    sudo sed -i '/^\[options\]/a ILoveCandy' /etc/pacman.conf
+fi
+
+printf "\n\e[32mSkript fertig\e[0m\n"
 
 ```
 
