@@ -69,6 +69,10 @@ fi
 # 8. Configure fastfetch / hyfetch
 # -----------------------
 echo "== Configuring fastfetch / hyfetch =="
+
+curl -fsSL -o ~/.config/hyfetch.json \
+https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/hyfetch.json
+
 mkdir -p ~/.config/fastfetch
 curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/config.jsonc \
     -o ~/.config/fastfetch/config.jsonc
