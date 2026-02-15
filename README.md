@@ -15,21 +15,17 @@ yay --version
 cd ~
 yay -S --needed - < Qqem-content.txt
 
-# Broken: git clone --depth=1 https://github.com/ChrisTitusTech/mybash.git
-# Or use linutil instead:
-# linutil
-# or: curl -fsSL https://christitus.com/linux | sh
-# Application Setup -> Bash Prompt
-git clone --depth=1 https://github.com/dacrab/mybash.git
-cd mybash
-./setup.sh
+# Linutil
+# Set alactritty theme and Numlock on Startup
+linutil -c ./linutil_config.toml --bypass-root
 
 # Configure fastfetch
 mkdir -p ~/.config/fastfetch && \
 curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/config.jsonc \
 -o ~/.config/fastfetch/config.jsonc
 
-# Edit pacman config. Add color and ILoveCandy
+# pacman config
+# Add color and ILoveCandy
 sudo sed -i 's/^#\s*Color/Color/' /etc/pacman.conf \
 && sudo grep -q '^ILoveCandy' /etc/pacman.conf \
 || sudo sed -i '/^\[options\]/a ILoveCandy' /etc/pacman.conf

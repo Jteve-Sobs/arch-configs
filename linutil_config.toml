@@ -1,0 +1,6 @@
+auto_execute = [
+    "Bash Prompt"
+]
+
+skip_confirmation = true
+size_bypass = true
