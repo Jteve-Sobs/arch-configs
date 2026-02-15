@@ -3,6 +3,5 @@ linutil
 localsend-bin
 multitail
 spotify
-visual-studio-code-bin
 yay
 yay-debug
