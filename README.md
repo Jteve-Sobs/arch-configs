@@ -17,6 +17,7 @@ yay -S --needed - < Qqem-content.txt
 
 # Linutil
 # Set alactritty theme and Numlock on Startup
+curl -O https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/linutil_config.toml
 linutil -c ./linutil_config.toml --bypass-root
 
 # Configure fastfetch
