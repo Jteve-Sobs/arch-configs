@@ -1,0 +1,239 @@
+[org/gnome/Console]
+last-window-maximised=false
+last-window-size=(1536, 848)
+
+[org/gnome/Extensions]
+window-height=752
+
+[org/gnome/control-center]
+last-panel='multitasking'
+window-state=(980, 640, false)
+
+[org/gnome/desktop/a11y]
+always-show-universal-access-status=false
+
+[org/gnome/desktop/app-folders]
+folder-children=['YaST', 'Pardus', '4c2a6794-51f5-457e-8d59-087e25b5f3ed', 'dc57f14e-47b9-4e11-9026-414793c5829b', '3cfc3cac-1337-4fa6-8cce-cca96d623db9', '0cd1a37a-62e4-4c37-8cee-be79a3bcfab0', '989f157a-0b3f-457f-a0ac-05802924b3f5']
+
+[org/gnome/desktop/app-folders/folders/0cd1a37a-62e4-4c37-8cee-be79a3bcfab0]
+apps=['steam.desktop', 'teamspeak3.desktop']
+name='Games'
+translate=false
+
+[org/gnome/desktop/app-folders/folders/3cfc3cac-1337-4fa6-8cce-cca96d623db9]
+apps=['org.shotcut.Shotcut.desktop', 'gimp.desktop', 'audacity.desktop', 'easytag.desktop']
+name='Kreatives'
+translate=false
+
+[org/gnome/desktop/app-folders/folders/4c2a6794-51f5-457e-8d59-087e25b5f3ed]
+apps=['libreoffice-startcenter.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'libreoffice-base.desktop', 'libreoffice-draw.desktop', 'libreoffice-math.desktop']
+name='Büro'
+
+[org/gnome/desktop/app-folders/folders/989f157a-0b3f-457f-a0ac-05802924b3f5]
+apps=['github-desktop.desktop', 'code.desktop', 'filezilla.desktop']
+name='Entwicklung'
+
+[org/gnome/desktop/app-folders/folders/Pardus]
+categories=['X-Pardus-Apps']
+name='X-Pardus-Apps.directory'
+translate=true
+
+[org/gnome/desktop/app-folders/folders/YaST]
+categories=['X-SuSE-YaST']
+name='suse-yast.directory'
+translate=true
+
+[org/gnome/desktop/app-folders/folders/dc57f14e-47b9-4e11-9026-414793c5829b]
+apps=['bssh.desktop', 'org.gnome.Contacts.desktop', 'org.gnome.Weather.desktop', 'org.gnome.clocks.desktop', 'org.gnome.Maps.desktop', 'org.gnome.Music.desktop', 'org.gnome.SimpleScan.desktop', 'org.gnome.Settings.desktop', 'bvnc.desktop', 'org.gnome.Showtime.desktop', 'org.gnome.Snapshot.desktop', 'org.gnome.Characters.desktop', 'avahi-discover.desktop', 'org.gnome.Tour.desktop', 'org.gnome.Yelp.desktop', 'org.gnome.Evince.desktop', 'system-config-printer.desktop', 'cups.desktop', 'qv4l2.desktop', 'nvim.desktop', 'cmake-gui.desktop', 'vim.desktop', 'org.gnome.Epiphany.desktop', 'org.gnome.Papers.desktop', 'org.gnome.font-viewer.desktop', 'org.gnome.Loupe.desktop', 'htop.desktop', 'org.gnome.Connections.desktop', 'org.gnome.Totem.desktop', 'gparted.desktop', 'lstopo.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Calculator.desktop', 'org.gnome.Decibels.desktop', 'org.gnome.SystemMonitor.desktop', 'org.freedesktop.MalcontentControl.desktop', 'qvidcap.desktop', 'nm-connection-editor.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.baobab.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.Logs.desktop']
+name='System'
+translate=false
+
+[org/gnome/desktop/background]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///usr/share/backgrounds/gnome/amber-l.jxl'
+picture-uri-dark='file:///usr/share/backgrounds/gnome/amber-d.jxl'
+primary-color='#ff7800'
+secondary-color='#000000'
+
+[org/gnome/desktop/break-reminders/eyesight]
+play-sound=true
+
+[org/gnome/desktop/break-reminders/movement]
+duration-seconds=uint32 300
+interval-seconds=uint32 1800
+play-sound=true
+
+[org/gnome/desktop/input-sources]
+sources=[('xkb', 'de')]
+xkb-options=@as []
+
+[org/gnome/desktop/interface]
+color-scheme='prefer-dark'
+enable-hot-corners=false
+
+[org/gnome/desktop/notifications]
+application-children=['gnome-power-panel', 'org-gnome-software', 'org-gnome-console', 'firefox', 'timeshift-gtk', 'gnome-about-panel', 'filezilla']
+
+[org/gnome/desktop/notifications/application/filezilla]
+application-id='filezilla.desktop'
+
+[org/gnome/desktop/notifications/application/firefox]
+application-id='firefox.desktop'
+
+[org/gnome/desktop/notifications/application/gnome-about-panel]
+application-id='gnome-about-panel.desktop'
+
+[org/gnome/desktop/notifications/application/gnome-power-panel]
+application-id='gnome-power-panel.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-console]
+application-id='org.gnome.Console.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-software]
+application-id='org.gnome.Software.desktop'
+
+[org/gnome/desktop/notifications/application/timeshift-gtk]
+application-id='timeshift-gtk.desktop'
+
+[org/gnome/desktop/peripherals/keyboard]
+numlock-state=true
+
+[org/gnome/desktop/peripherals/mouse]
+accel-profile='flat'
+
+[org/gnome/desktop/peripherals/touchpad]
+two-finger-scrolling-enabled=true
+
+[org/gnome/desktop/screensaver]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///usr/share/backgrounds/gnome/amber-l.jxl'
+primary-color='#ff7800'
+secondary-color='#000000'
+
+[org/gnome/desktop/search-providers]
+sort-order=['org.gnome.Settings.desktop', 'org.gnome.Contacts.desktop', 'org.gnome.Nautilus.desktop']
+
+[org/gnome/desktop/sound]
+event-sounds=true
+theme-name='__custom'
+
+[org/gnome/desktop/wm/keybindings]
+maximize=@as []
+unmaximize=@as []
+
+[org/gnome/desktop/wm/preferences]
+num-workspaces=1
+
+[org/gnome/evolution-data-server]
+migrated=true
+
+[org/gnome/mutter]
+dynamic-workspaces=false
+edge-tiling=false
+
+[org/gnome/mutter/keybindings]
+toggle-tiled-left=@as []
+toggle-tiled-right=@as []
+
+[org/gnome/nautilus/preferences]
+default-folder-viewer='icon-view'
+migrated-gtk-settings=true
+
+[org/gnome/nautilus/window-state]
+initial-size=(890, 550)
+
+[org/gnome/settings-daemon/plugins/color]
+night-light-schedule-automatic=false
+
+[org/gnome/settings-daemon/plugins/housekeeping]
+donation-reminder-last-shown=int64 1771168280043860
+
+[org/gnome/settings-daemon/plugins/media-keys]
+control-center=['<Super>i']
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+home=['<Super>e']
+reboot=['<Control><Alt>n']
+shutdown=['<Control><Alt>h']
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Super>t'
+command='kgx'
+name='OpenTerminal'
+
+[org/gnome/shell]
+app-picker-layout=[{'dc57f14e-47b9-4e11-9026-414793c5829b': <{'position': <0>}>, '4c2a6794-51f5-457e-8d59-087e25b5f3ed': <{'position': <1>}>, '3cfc3cac-1337-4fa6-8cce-cca96d623db9': <{'position': <2>}>, '0cd1a37a-62e4-4c37-8cee-be79a3bcfab0': <{'position': <3>}>, '989f157a-0b3f-457f-a0ac-05802924b3f5': <{'position': <4>}>, 'org.gnome.Extensions.desktop': <{'position': <5>}>, 'timeshift-gtk.desktop': <{'position': <6>}>, 'firefox.desktop': <{'position': <7>}>, 'chromium.desktop': <{'position': <8>}>, 'org.mozilla.Thunderbird.desktop': <{'position': <9>}>, 'spotify.desktop': <{'position': <10>}>, 'org.remmina.Remmina.desktop': <{'position': <11>}>, 'linutil.desktop': <{'position': <12>}>, 'localsend.desktop': <{'position': <13>}>}]
+command-history=['sh', 'bash', 'console', 'kgx']
+enabled-extensions=['dash-to-dock@micxgx.gmail.com', 'tiling-assistant@leleat-on-github']
+favorite-apps=['org.gnome.Console.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'code.desktop']
+welcome-dialog-last-shown-version='49.4'
+
+[org/gnome/shell/extensions/dash-to-dock]
+background-opacity=0.80000000000000004
+custom-theme-shrink=false
+dash-max-icon-size=48
+dock-position='BOTTOM'
+height-fraction=0.88
+multi-monitor=true
+preferred-monitor=-2
+preferred-monitor-by-connector='DP-2'
+show-trash=false
+
+[org/gnome/shell/extensions/tiling-assistant]
+activate-layout0=@as []
+activate-layout1=@as []
+activate-layout2=@as []
+activate-layout3=@as []
+auto-tile=@as []
+center-window=@as []
+debugging-free-rects=@as []
+debugging-show-tiled-rects=@as []
+default-move-mode=0
+disable-tile-groups=true
+dynamic-keybinding-behavior=3
+enable-advanced-experimental-features=true
+favorite-layouts=['-1', '-1']
+focus-hint=0
+focus-hint-color='rgb(53,132,228)'
+import-layout-examples=false
+last-version-installed=54
+overridden-settings={'org.gnome.mutter.edge-tiling': <@mb nothing>, 'org.gnome.desktop.wm.keybindings.maximize': <@mb nothing>, 'org.gnome.desktop.wm.keybindings.unmaximize': <@mb nothing>, 'org.gnome.mutter.keybindings.toggle-tiled-left': <@mb nothing>, 'org.gnome.mutter.keybindings.toggle-tiled-right': <@mb nothing>}
+restore-window=['<Super>Down']
+search-popup-layout=@as []
+show-layout-panel-indicator=true
+tile-bottom-half=@as []
+tile-bottom-half-ignore-ta=@as []
+tile-bottomleft-quarter=['<Super>KP_1']
+tile-bottomleft-quarter-ignore-ta=@as []
+tile-bottomright-quarter=['<Super>KP_2']
+tile-bottomright-quarter-ignore-ta=@as []
+tile-edit-mode=@as []
+tile-left-half=['<Super>Left']
+tile-left-half-ignore-ta=@as []
+tile-maximize=['<Super>Up']
+tile-maximize-horizontally=@as []
+tile-maximize-vertically=@as []
+tile-right-half=['<Super>Right']
+tile-right-half-ignore-ta=@as []
+tile-top-half=@as []
+tile-top-half-ignore-ta=@as []
+tile-topleft-quarter=['<Super>KP_4']
+tile-topleft-quarter-ignore-ta=@as []
+tile-topright-quarter=['<Super>KP_5']
+tile-topright-quarter-ignore-ta=@as []
+tiling-popup-all-workspace=true
+toggle-always-on-top=@as []
+toggle-tiling-popup=@as []
+
+[org/gnome/shell/world-clocks]
+locations=@av []
+
+[org/gnome/software]
+check-timestamp=int64 1771161231
+first-run=false
+flatpak-purge-timestamp=int64 1771171882
+
+[org/gtk/gtk4/settings/file-chooser]
+show-hidden=false
+sort-directories-first=false
