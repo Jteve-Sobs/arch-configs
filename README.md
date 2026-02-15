@@ -1,10 +1,18 @@
-Install all packages in list and update system
+# archinstall configuration script
+After launching Arch ISO with internet access
+
+```bash
+sudo archinstall --config https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/user_configuration.json
+```
+
+# Install all packages in list and update system
+
 ```bash
 
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "== Arch Setup startet =="
+echo "== Start Arch post setup script =="
 
 cd ~
 
@@ -56,7 +64,7 @@ if ! grep -q '^ILoveCandy' /etc/pacman.conf; then
     sudo sed -i '/^\[options\]/a ILoveCandy' /etc/pacman.conf
 fi
 
-printf "\n\e[32mSkript fertig\e[0m\n"
+printf "\n\e[32mScript finished\e[0m\n"
 
 ```
 
