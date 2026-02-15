@@ -69,5 +69,5 @@ printf "\n\e[32mScript finished\e[0m\n"
 ```
 
 Gnome extensions:  
-Dash to Dock  
-Tiling Assistant
+[Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)  
+[Tiling Assistant](https://extensions.gnome.org/extension/3733/tiling-assistant/)
