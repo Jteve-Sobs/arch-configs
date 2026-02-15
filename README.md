@@ -5,7 +5,7 @@ After launching Arch ISO with internet access
 archinstall --config https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/user_configuration.json
 ```
 
-# Install all packages in list and update system
+# Install all packages and configure system
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/main/arch-postinstall.sh | bash
