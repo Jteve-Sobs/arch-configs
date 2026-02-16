@@ -73,7 +73,13 @@ color-scheme='prefer-dark'
 enable-hot-corners=false
 
 [org/gnome/desktop/notifications]
-application-children=['gnome-power-panel', 'org-gnome-software', 'org-gnome-console', 'firefox', 'timeshift-gtk', 'gnome-about-panel', 'filezilla']
+application-children=['gnome-power-panel', 'org-gnome-software', 'org-gnome-console', 'firefox', 'timeshift-gtk', 'gnome-about-panel', 'filezilla', 'code-oss', 'org-mozilla-thunderbird']
+
+[org/gnome/desktop/notifications/application/code-oss]
+application-id='code-oss.desktop'
+
+[org/gnome/desktop/notifications/application/code]
+application-id='code.desktop'
 
 [org/gnome/desktop/notifications/application/filezilla]
 application-id='filezilla.desktop'
@@ -90,8 +96,14 @@ application-id='gnome-power-panel.desktop'
 [org/gnome/desktop/notifications/application/org-gnome-console]
 application-id='org.gnome.Console.desktop'
 
+[org/gnome/desktop/notifications/application/org-gnome-extensions]
+application-id='org.gnome.Extensions.desktop'
+
 [org/gnome/desktop/notifications/application/org-gnome-software]
 application-id='org.gnome.Software.desktop'
+
+[org/gnome/desktop/notifications/application/org-mozilla-thunderbird]
+application-id='org.mozilla.Thunderbird.desktop'
 
 [org/gnome/desktop/notifications/application/timeshift-gtk]
 application-id='timeshift-gtk.desktop'
@@ -166,18 +178,30 @@ name='OpenTerminal'
 app-picker-layout=[{'dc57f14e-47b9-4e11-9026-414793c5829b': <{'position': <0>}>, '4c2a6794-51f5-457e-8d59-087e25b5f3ed': <{'position': <1>}>, '3cfc3cac-1337-4fa6-8cce-cca96d623db9': <{'position': <2>}>, '0cd1a37a-62e4-4c37-8cee-be79a3bcfab0': <{'position': <3>}>, '989f157a-0b3f-457f-a0ac-05802924b3f5': <{'position': <4>}>, 'org.gnome.Extensions.desktop': <{'position': <5>}>, 'timeshift-gtk.desktop': <{'position': <6>}>, 'firefox.desktop': <{'position': <7>}>, 'chromium.desktop': <{'position': <8>}>, 'org.mozilla.Thunderbird.desktop': <{'position': <9>}>, 'spotify.desktop': <{'position': <10>}>, 'org.remmina.Remmina.desktop': <{'position': <11>}>, 'linutil.desktop': <{'position': <12>}>, 'localsend.desktop': <{'position': <13>}>}]
 command-history=['sh', 'bash', 'console', 'kgx']
 enabled-extensions=['dash-to-dock@micxgx.gmail.com', 'tiling-assistant@leleat-on-github']
-favorite-apps=['org.gnome.Console.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'code.desktop']
+favorite-apps=['org.gnome.Console.desktop', 'org.gnome.Nautilus.desktop', 'firefox.desktop', 'code-oss.desktop']
 welcome-dialog-last-shown-version='49.4'
 
 [org/gnome/shell/extensions/dash-to-dock]
+always-center-icons=false
+application-counter-overrides-notifications=true
 background-opacity=0.80000000000000004
 custom-theme-shrink=false
 dash-max-icon-size=48
+dock-fixed=false
 dock-position='BOTTOM'
+extend-height=false
 height-fraction=0.88
+hide-tooltip=false
+icon-size-fixed=false
+middle-click-action='launch'
 multi-monitor=true
 preferred-monitor=-2
 preferred-monitor-by-connector='DP-2'
+running-indicator-style='DOTS'
+shift-click-action='minimize'
+shift-middle-click-action='launch'
+show-apps-at-top=false
+show-icons-notifications-counter=true
 show-trash=false
 
 [org/gnome/shell/extensions/tiling-assistant]
@@ -230,9 +254,9 @@ toggle-tiling-popup=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1771161231
+check-timestamp=int64 1771258840
 first-run=false
-flatpak-purge-timestamp=int64 1771171882
+flatpak-purge-timestamp=int64 1771265975
 
 [org/gtk/gtk4/settings/file-chooser]
 show-hidden=false
