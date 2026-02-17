@@ -3,6 +3,8 @@
 # Robustes Arch Linux Postinstall Script
 set -euo pipefail
 
+start_time=$(date +%s)
+
 echo "== Start Arch post setup script =="
 
 cd ~
@@ -178,59 +180,88 @@ groups
 # -----------------------
 # 12. Set Firefox language to german
 # -----------------------
-echo "== Setting Firefox language to German =="
+echo "== Configuring Firefox language to German =="
 
-# Check for Firefox
+# 1️⃣ Check Firefox
 if ! command -v firefox >/dev/null 2>&1; then
-    echo "Firefox not installed."
-fi
-
-# Install language pack if it is missing
-if ! pacman -Q firefox-i18n-de >/dev/null 2>&1; then
-    echo "Installing German language pack..."
-    sudo pacman -S --noconfirm firefox-i18n-de || {
-        echo "Failed to install language pack."
-    }
+    echo "[ERROR] Firefox not installed. Skipping language setup."
 else
-    echo "Language pack already installed."
+    echo "[INFO] Firefox found: $(command -v firefox)"
 fi
 
-# Check profiles.ini
-PROFILE_INI="$HOME/.mozilla/firefox/profiles.ini"
+# 2️⃣ Install language pack if missing
+if ! pacman -Q firefox-i18n-de >/dev/null 2>&1; then
+    echo "[INFO] Installing German language pack..."
+    if ! sudo pacman -S --noconfirm firefox-i18n-de; then
+        echo "[ERROR] Failed to install language pack."
+    fi
+else
+    echo "[OK] Language pack already installed."
+fi
+
+# 3️⃣ Determine profile directory
+PROFILE_DIR="$HOME/.mozilla/firefox"
+PROFILE_INI="$PROFILE_DIR/profiles.ini"
 
 if [ ! -f "$PROFILE_INI" ]; then
-    echo "profiles.ini not found. Start Firefox once manually."
-fi
-
-# Get default profile
-PROFILE_PATH=$(awk -F= '
-    $1=="Default" && $2=="1" {found=1}
-    found && $1=="Path" {print $2; exit}
-' "$PROFILE_INI")
-
-if [ -z "$PROFILE_PATH" ]; then
-    echo "No default profile found."
-fi
-
-FULL_PROFILE="$HOME/.mozilla/firefox/$PROFILE_PATH"
-PREF_FILE="$FULL_PROFILE/prefs.js"
-
-# End Firefox
-pkill firefox 2>/dev/null || true
-sleep 2
-
-# Create prefs.js if it is missing
-touch "$PREF_FILE"
-
-# Set or replace locale 
-if grep -q 'intl.locale.requested' "$PREF_FILE"; then
-    sed -i 's/user_pref("intl.locale.requested".*/user_pref("intl.locale.requested", "de");/' "$PREF_FILE"
+    echo "[WARN] profiles.ini not found. Firefox may not have been started yet."
+    echo "[INFO] Skipping prefs.js modification for now."
 else
-    echo 'user_pref("intl.locale.requested", "de");' >> "$PREF_FILE"
+    # 4️⃣ Get default profile path
+    PROFILE_PATH=$(awk -F= '
+        $1=="Default" && $2=="1" {found=1}
+        found && $1=="Path" {print $2; exit}
+    ' "$PROFILE_INI")
+
+    # Fallback: first profile if no default
+    if [ -z "$PROFILE_PATH" ]; then
+        PROFILE_PATH=$(awk -F= '/^Path=/ {print $2; exit}' "$PROFILE_INI")
+        echo "[WARN] No default profile marked. Using first profile found."
+    fi
+
+    FULL_PROFILE="$PROFILE_DIR/$PROFILE_PATH"
+    PREF_FILE="$FULL_PROFILE/prefs.js"
+
+    # 5️⃣ Ensure profile folder exists
+    if [ ! -d "$FULL_PROFILE" ]; then
+        echo "[WARN] Profile folder $FULL_PROFILE does not exist. Creating..."
+        mkdir -p "$FULL_PROFILE" || echo "[ERROR] Could not create profile folder."
+    fi
+
+    # 6️⃣ Stop Firefox safely
+    pkill firefox >/dev/null 2>&1 || true
+    sleep 1
+
+    # 7️⃣ Create prefs.js safely
+    if ! touch "$PREF_FILE" 2>/dev/null; then
+        echo "[ERROR] Could not create prefs.js in $FULL_PROFILE"
+    fi
+
+    # 8️⃣ Set or replace locale
+    if [ -f "$PREF_FILE" ]; then
+        if grep -q 'intl.locale.requested' "$PREF_FILE" 2>/dev/null; then
+            sed -i 's/user_pref("intl.locale.requested".*/user_pref("intl.locale.requested", "de");/' "$PREF_FILE" \
+                || echo "[ERROR] Failed to update locale in prefs.js"
+            echo "[OK] Updated existing locale setting."
+        else
+            echo 'user_pref("intl.locale.requested", "de");' >> "$PREF_FILE" \
+                && echo "[OK] Added locale setting."
+        fi
+    else
+        echo "[WARN] prefs.js missing, cannot set locale."
+    fi
 fi
 
 # -----------------------
 # End
 # -----------------------
 echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
+
+end_time=$(date +%s)
+duration=$((end_time - start_time))
+hours=$((duration / 3600))
+minutes=$(((duration % 3600) / 60))
+seconds=$((duration % 60))
+echo "Script execution time: ${hours}h ${minutes}m ${seconds}s"
+
 read -p "Press Enter to exit..."
