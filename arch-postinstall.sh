@@ -172,7 +172,10 @@ echo "== Docker configuration =="
 
 sudo systemctl enable --now docker
 
-sudo systemctl status docker
+sudo systemctl status docker --no-pager --no-legend
+
+sudo usermod -aG docker $USER
+newgrp docker
 
 echo "Current group assignments"
 groups
