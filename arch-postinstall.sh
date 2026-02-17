@@ -260,11 +260,6 @@ fi
 # -----------------------
 echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
 
-duration=$(( $(date +%s) - start ))
-
-minutes=$((duration / 60))
-seconds=$((duration % 60))
-
-echo "Script execution time: ${minutes}m ${seconds}s"
+echo "Script execution time: $(( $(date +%s) - start )) seconds"
 
 read -p "Press Enter to exit..."
