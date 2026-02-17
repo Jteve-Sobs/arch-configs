@@ -3,6 +3,8 @@
 # Robustes Arch Linux Postinstall Script
 set -euo pipefail
 
+start=$(date +%s)
+
 echo "== Start Arch post setup script =="
 
 cd ~
@@ -258,10 +260,11 @@ fi
 # -----------------------
 echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
 
-duration=$SECONDS
-hours=$((duration / 3600))
-minutes=$(((duration % 3600) / 60))
+duration=$(( $(date +%s) - start ))
+
+minutes=$((duration / 60))
 seconds=$((duration % 60))
-echo "Script execution time: ${hours}h ${minutes}m ${seconds}s"
+
+echo "Script execution time: ${minutes}m ${seconds}s"
 
 read -p "Press Enter to exit..."
