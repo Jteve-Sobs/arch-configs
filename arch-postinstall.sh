@@ -163,6 +163,74 @@ else
     echo "GNOME Shell not running – skipping GNOME extensions and settings"
 fi
 
+# -----------------------
+# 11. Enable docker and start it
+# -----------------------
+echo "== Docker configuration =="
 
+sudo systemctl enable --now docker
+
+sudo systemctl status docker
+
+echo "Current group assignments"
+groups
+
+# -----------------------
+# 12. Set Firefox language to german
+# -----------------------
+echo "== Setting Firefox language to German =="
+
+# Check for Firefox
+if ! command -v firefox >/dev/null 2>&1; then
+    echo "Firefox not installed."
+fi
+
+# Install language pack if it is missing
+if ! pacman -Q firefox-i18n-de >/dev/null 2>&1; then
+    echo "Installing German language pack..."
+    sudo pacman -S --noconfirm firefox-i18n-de || {
+        echo "Failed to install language pack."
+    }
+else
+    echo "Language pack already installed."
+fi
+
+# Check profiles.ini
+PROFILE_INI="$HOME/.mozilla/firefox/profiles.ini"
+
+if [ ! -f "$PROFILE_INI" ]; then
+    echo "profiles.ini not found. Start Firefox once manually."
+fi
+
+# Get default profile
+PROFILE_PATH=$(awk -F= '
+    $1=="Default" && $2=="1" {found=1}
+    found && $1=="Path" {print $2; exit}
+' "$PROFILE_INI")
+
+if [ -z "$PROFILE_PATH" ]; then
+    echo "No default profile found."
+fi
+
+FULL_PROFILE="$HOME/.mozilla/firefox/$PROFILE_PATH"
+PREF_FILE="$FULL_PROFILE/prefs.js"
+
+# End Firefox
+pkill firefox 2>/dev/null || true
+sleep 2
+
+# Create prefs.js if it is missing
+touch "$PREF_FILE"
+
+# Set or replace locale 
+if grep -q 'intl.locale.requested' "$PREF_FILE"; then
+    sed -i 's/user_pref("intl.locale.requested".*/user_pref("intl.locale.requested", "de");/' "$PREF_FILE"
+else
+    echo 'user_pref("intl.locale.requested", "de");' >> "$PREF_FILE"
+fi
+
+# -----------------------
+# End
+# -----------------------
 echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
 read -p "Press Enter to exit..."
