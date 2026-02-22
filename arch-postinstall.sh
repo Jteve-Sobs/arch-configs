@@ -325,7 +325,6 @@ while ! pgrep -u "$USER" gnome-shell >/dev/null 2>&1; do
 done
 
 apps=(
-  firefox
   github-desktop
   spotify
   thunderbird
