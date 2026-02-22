@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # arch-postinstall.sh
-# Robustes Arch Linux Postinstall Script
+# Robust Arch Linux Postinstall Script
 set -euo pipefail
 
 echo "== Start Arch post setup script =="
@@ -12,12 +12,14 @@ sudo -v
 # -----------------------
 # 1. System Update
 # -----------------------
+echo ""
 echo "== Updating system =="
 sudo pacman -Syu --noconfirm
 
 # -----------------------
 # 2. Download package lists
 # -----------------------
+echo ""
 echo "== Downloading package lists =="
 curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqen-content.txt
 curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/Qqem-content.txt
@@ -25,6 +27,7 @@ curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads
 # -----------------------
 # 3. Install repository packages
 # -----------------------
+echo ""
 echo "== Installing repository packages =="
 sudo pacman -S --needed --noconfirm - < Qqen-content.txt
 
@@ -32,6 +35,7 @@ sudo pacman -S --needed --noconfirm - < Qqen-content.txt
 # 4. Install yay (AUR helper)
 # -----------------------
 if ! command -v yay &>/dev/null; then
+    echo ""
     echo "== Installing yay =="
     tmpdir=$(mktemp -d)
     git clone https://aur.archlinux.org/yay.git "$tmpdir/yay"
@@ -40,22 +44,26 @@ if ! command -v yay &>/dev/null; then
     cd ~
     rm -rf "$tmpdir"
 fi
+echo ""
 yay --version
 
 # -----------------------
 # 5. Install AUR packages
 # -----------------------
+echo ""
 echo "== Installing AUR packages =="
 yay -S --needed --noconfirm - < Qqem-content.txt
 
 # -----------------------
 # 6. Cleanup package lists
 # -----------------------
+echo ""
 rm -f Qqen-content.txt Qqem-content.txt
 
 # -----------------------
 # 7. Linutil (optional)
 # -----------------------
+echo ""
 if command -v linutil &>/dev/null; then
     echo "== Running linutil =="
     curl -fsSLO https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/linutil_config.toml
@@ -68,6 +76,7 @@ fi
 # -----------------------
 # 8. Configure fastfetch / hyfetch
 # -----------------------
+echo ""
 echo "== Configuring fastfetch / hyfetch =="
 
 curl -fsSL -o ~/.config/hyfetch.json \
@@ -90,15 +99,16 @@ else
             s|^[[:space:]]*fi|elif [ -f /usr/bin/fastfetch ]; then\n    fastfetch\nfi|
         }' "$BASHRC"
 
-        echo "Set hyfetch as default system information tool for terminal\n"
+        echo "Set hyfetch as default system information tool for terminal"
     else
-        echo "Kein fastfetch-Block in .bashrc gefunden. Nichts geändert."
+        echo "fastfetch block was not found in .bashrc. Nothing changed."
     fi
 fi
 
 # -----------------------
 # 9. Pacman configuration
 # -----------------------
+echo ""
 echo "== Configuring pacman =="
 sudo sed -i 's/^#Color/Color/' /etc/pacman.conf
 if ! grep -q '^ILoveCandy' /etc/pacman.conf; then
@@ -108,6 +118,7 @@ fi
 # -----------------------
 # 10. GNOME Extensions (optional)
 # -----------------------
+echo ""
 if pgrep -x gnome-shell >/dev/null; then
     echo "== Installing GNOME extensions =="
     TMP_DIR="$HOME/gnome-extensions-temp"
@@ -145,10 +156,10 @@ if pgrep -x gnome-shell >/dev/null; then
     echo ""
     echo "Currently active GNOME extensions:"
     gnome-extensions list --active
-    echo ""
 
     rm -rf "$TMP_DIR"
 
+    echo ""
     echo "== Loading GNOME dconf settings =="
     if curl -fsSL https://raw.githubusercontent.com/Jteve-Sobs/arch-configs/refs/heads/main/gnome-settings.dconf -o gnome-settings.dconf; then
         dconf load / < gnome-settings.dconf
@@ -166,21 +177,25 @@ fi
 # -----------------------
 # 11. Enable docker and start it
 # -----------------------
+echo ""
 echo "== Docker configuration =="
 
 sudo systemctl enable --now docker
 
 sudo systemctl status docker --no-pager --no-legend
 
+echo ""
 sudo usermod -aG docker $USER
 newgrp docker
 
+echo ""
 echo "Current group assignments"
 groups
 
 # -----------------------
 # 12. Set Firefox language to german
 # -----------------------
+echo ""
 echo "== Configuring Firefox language to German =="
 
 # 1️⃣ Check Firefox
@@ -257,5 +272,34 @@ fi
 # End
 # -----------------------
 echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
+
+read -rp "Launch applications for initial configuration? [Y/n]: " answer
+
+answer=${answer:-Y}
+
+if [[ "$answer" =~ ^[Yy]$ ]]; then
+    apps=(
+      firefox
+      github-desktop
+      spotify
+      thunderbird
+      filezilla
+      steam
+    )
+
+    echo "== Launching applications for initial configuration =="
+
+    for app in "${apps[@]}"; do
+        if command -v "$app" >/dev/null 2>&1; then
+            echo "Starting $app..."
+            "$app" &
+            sleep 5
+        else
+            echo "$app not installed."
+        fi
+    done
+else
+    echo "Skipping application launch."
+fi
 
 read -p "Press Enter to exit..."
