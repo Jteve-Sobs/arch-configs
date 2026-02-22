@@ -202,14 +202,14 @@ groups
 echo ""
 echo "== Configuring Firefox language to German =="
 
-# 1️⃣ Check Firefox
+# Check Firefox
 if ! command -v firefox >/dev/null 2>&1; then
     echo "[ERROR] Firefox not installed. Skipping language setup."
 else
     echo "[INFO] Firefox found: $(command -v firefox)"
 fi
 
-# 2️⃣ Install language pack if missing
+# Install language pack if missing
 if ! pacman -Q firefox-i18n-de >/dev/null 2>&1; then
     echo "[INFO] Installing German language pack..."
     if ! sudo pacman -S --noconfirm firefox-i18n-de; then
@@ -219,7 +219,7 @@ else
     echo "[OK] Language pack already installed."
 fi
 
-# 3️⃣ Determine profile directory
+# Determine profile directory
 PROFILE_DIR="$HOME/.mozilla/firefox"
 PROFILE_INI="$PROFILE_DIR/profiles.ini"
 
@@ -227,7 +227,7 @@ if [ ! -f "$PROFILE_INI" ]; then
     echo "[WARN] profiles.ini not found. Firefox may not have been started yet."
     echo "[INFO] Skipping prefs.js modification for now."
 else
-    # 4️⃣ Get default profile path
+    # Get default profile path
     PROFILE_PATH=$(awk -F= '
         $1=="Default" && $2=="1" {found=1}
         found && $1=="Path" {print $2; exit}
@@ -242,22 +242,22 @@ else
     FULL_PROFILE="$PROFILE_DIR/$PROFILE_PATH"
     PREF_FILE="$FULL_PROFILE/prefs.js"
 
-    # 5️⃣ Ensure profile folder exists
+    # Ensure profile folder exists
     if [ ! -d "$FULL_PROFILE" ]; then
         echo "[WARN] Profile folder $FULL_PROFILE does not exist. Creating..."
         mkdir -p "$FULL_PROFILE" || echo "[ERROR] Could not create profile folder."
     fi
 
-    # 6️⃣ Stop Firefox safely
+    # Stop Firefox safely
     pkill firefox >/dev/null 2>&1 || true
     sleep 1
 
-    # 7️⃣ Create prefs.js safely
+    # Create prefs.js safely
     if ! touch "$PREF_FILE" 2>/dev/null; then
         echo "[ERROR] Could not create prefs.js in $FULL_PROFILE"
     fi
 
-    # 8️⃣ Set or replace locale
+    # Set or replace locale
     if [ -f "$PREF_FILE" ]; then
         if grep -q 'intl.locale.requested' "$PREF_FILE" 2>/dev/null; then
             sed -i 's/user_pref("intl.locale.requested".*/user_pref("intl.locale.requested", "de");/' "$PREF_FILE" \
