@@ -186,7 +186,11 @@ sudo systemctl status docker --no-pager --no-legend
 
 echo ""
 sudo usermod -aG docker $USER
-newgrp docker
+if groups "$USER" | grep -q docker; then
+    echo "User is in docker group."
+else
+    echo "User not yet in docker group. Re-login required."
+fi
 
 echo ""
 echo "Current group assignments"
@@ -269,37 +273,152 @@ else
 fi
 
 # -----------------------
-# End
+# 13. Autostart for first logon
 # -----------------------
-echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
+echo ""
+USER_HOME="$HOME"
+SCRIPT_DIR="$USER_HOME/scripts"
+SCRIPT_PATH="$SCRIPT_DIR/first-app-launch.sh"
+AUTOSTART_DIR="$USER_HOME/.config/autostart"
+AUTOSTART_FILE="$AUTOSTART_DIR/first-setup.desktop"
 
-read -rp "Launch applications for initial configuration? [Y/n]: " answer
+echo "== Creating first login setup =="
 
-answer=${answer:-Y}
+mkdir -p "$SCRIPT_DIR"
+mkdir -p "$AUTOSTART_DIR"
 
-if [[ "$answer" =~ ^[Yy]$ ]]; then
-    apps=(
-      firefox
-      github-desktop
-      spotify
-      thunderbird
-      filezilla
-      steam
-    )
+cat > "$SCRIPT_PATH" << 'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
 
-    echo "== Launching applications for initial configuration =="
+LOGFILE="$HOME/.first_setup.log"
+LOCKFILE="$HOME/.first_setup_done"
 
-    for app in "${apps[@]}"; do
-        if command -v "$app" >/dev/null 2>&1; then
-            echo "Starting $app..."
-            "$app" &
-            sleep 5
-        else
-            echo "$app not installed."
-        fi
-    done
-else
-    echo "Skipping application launch."
+exec > >(tee -a "$LOGFILE") 2>&1
+
+echo "================================="
+echo " First Login Setup Starting"
+echo "================================="
+
+# --- Prevent double run ---
+if [ -f "$LOCKFILE" ]; then
+    echo "Already executed. Exiting."
+    exit 0
 fi
 
+touch "$LOCKFILE"
+
+# --- Wait for network (max 30s) ---
+echo "Waiting for network..."
+for i in {1..30}; do
+    if ping -c1 archlinux.org >/dev/null 2>&1; then
+        echo "Network is up."
+        break
+    fi
+    sleep 1
+done
+
+# --- Wait for GNOME session ---
+echo "Waiting for GNOME session..."
+while ! pgrep -u "$USER" gnome-shell >/dev/null 2>&1; do
+    sleep 1
+done
+
+apps=(
+  firefox
+  github-desktop
+  spotify
+  thunderbird
+  filezilla
+  steam
+)
+
+echo "Launching applications..."
+
+for app in "${apps[@]}"; do
+    if command -v "$app" >/dev/null 2>&1; then
+        echo "Starting $app..."
+        "$app" &
+        sleep 5
+    else
+        echo "$app not installed."
+    fi
+done
+
+echo "Cleaning up autostart..."
+
+rm -f "$HOME/.config/autostart/first-setup.desktop"
+
+SCRIPT_PATH="$(realpath "$0")"
+rm -f "$SCRIPT_PATH"
+
+echo "Setup finished successfully."
+echo "================================="
+EOF
+
+chmod +x "$SCRIPT_PATH"
+
+cat > "$AUTOSTART_FILE" << EOF
+[Desktop Entry]
+Type=Application
+Exec=$SCRIPT_PATH
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=First Setup
+EOF
+
+echo "Done."
+echo "It will execute on next login."
+
+# -----------------------
+# 14. General autostart
+# -----------------------
+echo
+echo "== Creating autostart directory =="
+mkdir -p "$AUTOSTART_DIR"
+
+echo "== Creating Firefox autostart entry =="
+cat > "$AUTOSTART_DIR/firefox.desktop" <<EOF
+[Desktop Entry]
+Type=Application
+Exec=firefox
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Firefox
+EOF
+
+echo "== Creating KGX (GNOME Console) autostart entry =="
+cat > "$AUTOSTART_DIR/kgx.desktop" <<EOF
+[Desktop Entry]
+Type=Application
+Exec=kgx
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=GNOME Console
+EOF
+
+echo "== Done. Firefox and KGX will start automatically on next login. =="
+
+# -----------------------
+# End
+# -----------------------
+echo ""
+echo -e "\n\e[32mArch postinstall script finished successfully\e[0m"
+
+echo
+read -p "Do you want to logout now? [Y/n]: " logout_choice
+
+logout_choice=${logout_choice:-Y}
+
+if [[ "$logout_choice" =~ ^[Yy]$ ]]; then
+    echo "Logging out..."
+    gnome-session-quit --logout --no-prompt
+else
+    echo "Logout skipped."
+fi
+
+echo
 read -p "Press Enter to exit..."
